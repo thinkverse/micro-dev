@@ -1,0 +1,16 @@
+{
+  "extends": "@vercel/style-guide/typescript",
+  "compilerOptions": {
+    "target": "ES2021",
+    "module": "CommonJS",
+    "moduleResolution": "Node16",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "outDir": "dist",
+    "declaration": true,
+    "declarationDir": "./types",
+    "declarationMap": true,
+    "removeComments": true
+  },
+  "include": ["src"]
+}

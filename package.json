@@ -1,16 +1,20 @@
 {
   "name": "micro-dev",
   "version": "3.1.0",
-  "main": "./lib/index.js",
+  "main": "./dist/lib/index.js",
   "files": [
-    "bin",
-    "lib"
+    "src",
+    "dist",
+    "types"
   ],
   "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "yarn run build",
+    "type-check": "tsc -noEmit",
     "test": "vitest"
   },
   "bin": {
-    "micro-dev": "./bin/micro-dev.js"
+    "micro-dev": "./dist/bin/micro-dev.js"
   },
   "repository": "vercel/micro-dev",
   "license": "MIT",
