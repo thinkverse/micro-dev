@@ -1,25 +1,28 @@
+// Type
+import type { Socket } from 'net';
+import type { Server } from 'http';
+import type { FSWatcher } from 'chokidar';
 // Native
-const path = require('node:path');
-const debounce = require('debounce');
-
+import path from 'path';
+import debounce from 'debounce';
 // Packages
-const { write: copy } = require('clipboardy');
-const ip = require('ip');
-const chalk = require('chalk');
-const boxen = require('boxen');
-const { watch } = require('chokidar');
-const pkgUp = require('pkg-up');
+import { write } from 'clipboardy';
+import ip from 'ip';
+import chalk from 'chalk';
+import boxen from 'boxen';
+import { watch } from 'chokidar';
+import pkgUp from 'pkg-up';
 
-const copyToClipboard = async (text) => {
+export const copyToClipboard = async (text: string): Promise<boolean> => {
   try {
-    await copy(text);
+    await write(text);
     return true;
   } catch (err) {
     return false;
   }
 };
 
-const restartServer = (file, flags, watcher) => {
+export const restartServer = (file: string, flags: object, watcher: FSWatcher) => {
   const watched = watcher.getWatched();
   const toDelete = [];
 
@@ -53,7 +56,7 @@ const restartServer = (file, flags, watcher) => {
   require('./serve')(file, flags, true);
 };
 
-const destroySockets = (list) => {
+const destroySockets = (list: Socket[]): void => {
   // Destroy all sockets before closing the server
   // Otherwise it will gracefully exit and take a long time
   for (const socket of list) {
@@ -61,7 +64,7 @@ const destroySockets = (list) => {
   }
 };
 
-module.exports = async (server, inUse, flags, sockets) => {
+export const listening = async (server: Server, inUse: object, flags: object, sockets: Socket[]): Promise<void> => {
   const details = server.address();
   const ipAddress = ip.address();
   const url = `http://${ipAddress}:${details.port}`;

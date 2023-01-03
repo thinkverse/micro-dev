@@ -1,11 +1,14 @@
-// Packages
-const chalk = require('chalk');
-const jsome = require('jsome');
-const PrettyError = require('pretty-error');
-const stringLength = require('string-length');
-const { json, send } = require('micro');
+/* eslint-disable eslint-comments/disable-enable-pair */
+/* eslint-disable no-console */
 
-const pe = new PrettyError();
+// Packages
+import chalk from 'chalk';
+import jsome from 'jsome';
+import PrettyError from 'pretty-error';
+import stringLength from 'string-length';
+import { json, send  } from 'micro';
+
+const pe: PrettyError = new PrettyError();
 
 jsome.colors = {
   num: 'cyan',
@@ -20,7 +23,7 @@ jsome.colors = {
   brack: 'reset',
 };
 
-const logLine = (message, date) => {
+const logLine = (message: string, date: Date): void => {
   const dateString = `${chalk.grey(date.toLocaleTimeString())}`;
   let logSpace =
     process.stdout.columns - stringLength(message) - stringLength(dateString);
@@ -32,7 +35,7 @@ const logLine = (message, date) => {
   console.log(`${message}${' '.repeat(logSpace)}${dateString}\n`);
 };
 
-const logRequest = async ({ req, start, requestIndex, limit }) => {
+const logRequest = async ({ req, start, requestIndex, limit }): Promise<void> => {
   logLine(`> #${requestIndex} ${chalk.bold(req.method)} ${req.url}`, start);
 
   if (
@@ -49,7 +52,7 @@ const logRequest = async ({ req, start, requestIndex, limit }) => {
   }
 };
 
-const logStatusCode = (statusCode) => {
+const logStatusCode = (statusCode: number): string|number => {
   if (statusCode >= 500) {
     return chalk.red(statusCode);
   }
@@ -69,7 +72,7 @@ const logStatusCode = (statusCode) => {
   return statusCode;
 };
 
-const logResponse = async ({ res, end, endTime, requestIndex, chunk }) => {
+const logResponse = ({ res, end, endTime, requestIndex, chunk }): void => {
   const statusCode = logStatusCode(res.statusCode);
 
   logLine(`< #${requestIndex} ${statusCode} [+${end}]`, endTime);
@@ -123,7 +126,7 @@ const initLog = (req, res, limit) => {
   };
 };
 
-module.exports = (fn, limit) => async (req, res) => {
+export const log = (fn, limit) => async (req, res) => {
   initLog(req, res, limit);
 
   try {

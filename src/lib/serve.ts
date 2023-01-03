@@ -2,15 +2,22 @@
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 // Packages
-const getPort = require('get-port');
-const serve = require('micro/lib');
-const getModule = require('micro/lib/handler');
-
+import getPort from 'get-port';
+import serve from 'micro/lib';
+import getModule from 'micro/lib/handler';
 // Utilities
-const listening = require('./listening');
-const log = require('./log');
+import listening from './listening';
+import log from './log';
 
-module.exports = async (file, flags, restarting) => {
+export type ServeHandler = (
+  file: string,
+  flags: object,
+  restarting: boolean
+) => unknown;
+
+type Serve = (fn: ServeHandler) => unknown;
+
+export const serve: Serve = async (file: string, flags: object, restarting: boolean) => {
   if (restarting) {
     process.emit('SIGUSR2');
   }

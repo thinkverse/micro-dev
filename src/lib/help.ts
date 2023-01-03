@@ -1,7 +1,8 @@
 // Packages
-const { green: g } = require('chalk');
+import chalk from 'chalk';
 
-module.exports = () => {
+export const generateHelp = (): string => {
+  const { green: g } = chalk;
   const usage = `\n  Usage: ${g('micro-dev')} [path] [options]
 
   Options:

@@ -1,18 +1,18 @@
 #!/usr/bin/env node
+/* eslint-disable eslint-comments/disable-enable-pair */
+/* eslint-disable no-console */
 
 // Native
-const { existsSync } = require('node:fs');
-const path = require('node:path');
-
+import { existsSync } from 'fs';
+import path from 'path';
 // Packages
-const mri = require('mri');
-const dotEnv = require('dotenv');
-
+import mri from 'mri';
+import dotEnv from 'dotenv';
 // Utilities
-const generateHelp = require('../lib/help');
-const serve = require('../lib/serve');
-const { version } = require('../package');
-const logError = require('../lib/error');
+import { generateHelp } from '../lib/help';
+import { serve } from '../lib/serve';
+import { version } from '../../package.json';
+import { logError } from '../lib/error';
 
 const flags = mri(process.argv.slice(2), {
   default: {

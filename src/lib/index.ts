@@ -1,14 +1,13 @@
+// Packages
+import ip from 'ip';
+import chalk from 'chalk';
+import boxen from 'boxen';
+import serve from 'micro/lib';
+// Utilities
+import { log } from './log';
+
 // Ensure that the loaded files and packages have the correct env
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-
-// Packages
-const serve = require('micro/lib');
-const ip = require('ip');
-const chalk = require('chalk');
-const boxen = require('boxen');
-
-// Utilities
-const log = require('./log');
 
 /**
  * micro-dev for programmatic usage
@@ -17,7 +16,7 @@ const log = require('./log');
  *
  * require('micro-dev')({ silent: false, limit: '1mb', host: '::', port: PORT })(handler)
  */
-module.exports = (flags) => (handler) => {
+module.exports = (flags: object) => (handler: any): void => {
   const module = flags.silent ? handler : log(handler, flags.limit);
   const server = serve(module);
 
