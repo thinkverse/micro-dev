@@ -10,6 +10,8 @@
   "scripts": {
     "build": "tsc",
     "prepublishOnly": "yarn run build",
+    "eslint-check": "eslint --max-warnings=0 .",
+    "prettier-check": "prettier --check .",
     "type-check": "tsc -noEmit",
     "test": "vitest"
   },
@@ -51,5 +53,6 @@
   },
   "peerDependencies": {
     "micro": ">=9.0.0"
-  }
+  },
+  "prettier": "@vercel/style-guide/prettier"
 }
