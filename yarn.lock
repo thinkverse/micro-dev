@@ -383,6 +383,11 @@
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-5.1.2.tgz#07508b45797cb81ec3f273011b054cd0755eddca"
   integrity sha512-K0VQKziLUWkVKiRVrx4a40iPaxTUefQmjtkQofBkYRcoaaL/8rhwDWww9qWbrgicNOgnpIsMxyNIUM4+n6dUIA==
 
+"@types/mri@1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@types/mri/-/mri-1.1.1.tgz#bb2fb3f21068998e816fcdd2bcefd4233a711e6e"
+  integrity sha512-nJOuiTlsvmClSr3+a/trTSx4DTuY/VURsWGKSf/eeavh0LRMqdsK60ti0TlwM5iHiGOK3/Ibkxsbr7i9rzGreA==
+
 "@types/node@*":
   version "18.0.3"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-18.0.3.tgz#463fc47f13ec0688a33aec75d078a0541a447199"
@@ -1057,10 +1062,10 @@ domutils@^2.5.2, domutils@^2.8.0:
     domelementtype "^2.2.0"
     domhandler "^4.2.0"
 
-dotenv@5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-5.0.1.tgz#a5317459bd3d79ab88cff6e44057a6a3fbb1fcef"
-  integrity sha512-4As8uPrjfwb7VXC+WnLCbXK7y+Ueb2B3zgNCePYfhxS1PYeaO1YTeplffTEcbfLhvFNGLAz90VvJs9yomG7bow==
+dotenv@16.0.3:
+  version "16.0.3"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.0.3.tgz#115aec42bac5053db3c456db30cc243a5a836a07"
+  integrity sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==
 
 electron-to-chromium@^1.4.251:
   version "1.4.284"

@@ -37,7 +37,7 @@
     "chokidar": "3.5.3",
     "clipboardy": "1.2.3",
     "debounce": "1.1.0",
-    "dotenv": "5.0.1",
+    "dotenv": "16.0.3",
     "get-port": "3.2.0",
     "ip": "1.1.5",
     "jsome": "2.5.0",
@@ -47,6 +47,7 @@
     "string-length": "2.0.0"
   },
   "devDependencies": {
+    "@types/mri": "1.1.1",
     "@types/node": "18.11.18",
     "@vercel/style-guide": "4.0.2",
     "eslint": "8.31.0",
