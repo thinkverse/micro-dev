@@ -16,6 +16,9 @@ import { version } from '../../package.json';
 import { logError } from '../lib/error';
 
 export interface Flags extends mri.Argv {
+  host?: string,
+  port?: number,
+  limit?: string,
   dotenv?: string;
 }
 

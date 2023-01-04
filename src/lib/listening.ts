@@ -1,9 +1,11 @@
+/* eslint-disable eslint-comments/disable-enable-pair */
+/* eslint-disable no-console */
 // Type
 import type { Socket } from 'net';
 import type { Server } from 'http';
-import type { FSWatcher } from 'chokidar';
 // Native
 import path from 'path';
+import type { FSWatcher } from 'chokidar';
 import debounce from 'debounce';
 // Packages
 import { write } from 'clipboardy';
@@ -12,6 +14,7 @@ import chalk from 'chalk';
 import boxen from 'boxen';
 import { watch } from 'chokidar';
 import pkgUp from 'pkg-up';
+import type { Flags } from '../bin/micro-dev';
 
 export const copyToClipboard = async (text: string): Promise<boolean> => {
   try {
@@ -22,7 +25,7 @@ export const copyToClipboard = async (text: string): Promise<boolean> => {
   }
 };
 
-export const restartServer = (file: string, flags: object, watcher: FSWatcher) => {
+export const restartServer = (file: string, flags: Flags, watcher: FSWatcher) => {
   const watched = watcher.getWatched();
   const toDelete = [];
 
@@ -41,7 +44,7 @@ export const restartServer = (file: string, flags: object, watcher: FSWatcher) =
 
   // Remove file that changed from the `require` cache
   for (const item of toDelete) {
-    let location;
+    let location: string | undefined;
 
     try {
       location = require.resolve(item);
@@ -49,7 +52,9 @@ export const restartServer = (file: string, flags: object, watcher: FSWatcher) =
       continue;
     }
 
-    delete require.cache[location];
+    if (location) {
+      delete require.cache[location];
+    }
   }
 
   // Restart the server
@@ -64,7 +69,7 @@ const destroySockets = (list: Socket[]): void => {
   }
 };
 
-export const listening = async (server: Server, inUse: object, flags: object, sockets: Socket[]): Promise<void> => {
+export const listening = async (server: Server, inUse: object|boolean, flags: Flags, sockets: Socket[]): Promise<void> => {
   const details = server.address();
   const ipAddress = ip.address();
   const url = `http://${ipAddress}:${details.port}`;

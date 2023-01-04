@@ -1,14 +1,14 @@
 {
   "name": "micro-dev",
   "version": "3.1.0",
-  "main": "./dist/lib/index.js",
+  "main": "./dist/src/lib/index.js",
   "files": [
     "src",
     "dist",
     "types"
   ],
   "bin": {
-    "micro-dev": "./dist/bin/micro-dev.js"
+    "micro-dev": "./dist/src/bin/micro-dev.js"
   },
   "engines": {
     "node": ">= 16.0.0"
@@ -55,8 +55,6 @@
     "typescript": "4.9.4",
     "vitest": "0.17.0"
   },
-  "peerDependencies": {
-    "micro": ">=9.0.0"
-  },
+  "peerDependencies": {},
   "prettier": "@vercel/style-guide/prettier"
 }

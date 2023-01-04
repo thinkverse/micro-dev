@@ -1,9 +1,13 @@
+/* eslint-disable eslint-comments/disable-enable-pair */
+/* eslint-disable no-console */
 // Packages
+import type { Socket } from 'net';
 import ip from 'ip';
 import chalk from 'chalk';
 import boxen from 'boxen';
 import serve from 'micro/lib';
 // Utilities
+import type { Flags } from '../bin/micro-dev';
 import { log } from './log';
 
 // Ensure that the loaded files and packages have the correct env
@@ -16,17 +20,18 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
  *
  * require('micro-dev')({ silent: false, limit: '1mb', host: '::', port: PORT })(handler)
  */
-module.exports = (flags: object) => (handler: any): void => {
+module.exports = (flags: Flags) => (handler: unknown): void => {
   const module = flags.silent ? handler : log(handler, flags.limit);
   const server = serve(module);
 
-  const sockets = [];
-  server.on('connection', (socket) => {
+  const sockets: Socket[] = [];
+
+  server.on('connection', (socket: Socket) => {
     const index = sockets.push(socket);
     socket.once('close', () => sockets.splice(index, 1));
   });
 
-  server.listen(flags.port, flags.host, (err) => {
+  server.listen(flags.port, flags.host, (err: Error | null) => {
     if (err) {
       console.error('micro:', err.stack);
       process.exit(1);

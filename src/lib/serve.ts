@@ -1,31 +1,33 @@
-// Ensure that the loaded files and packages have the correct env
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-
+/* eslint-disable eslint-comments/disable-enable-pair */
+/* eslint-disable no-console */
 // Packages
+import type { Socket } from 'net';
 import getPort from 'get-port';
 import serve from 'micro/lib';
 import getModule from 'micro/lib/handler';
 // Utilities
+import type { Flags } from '../bin/micro-dev';
 import listening from './listening';
 import log from './log';
 
-export type ServeHandler = (
+// Ensure that the loaded files and packages have the correct env
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+
+type Serve = (
   file: string,
   flags: object,
-  restarting: boolean
+  restarting?: boolean
 ) => unknown;
 
-type Serve = (fn: ServeHandler) => unknown;
-
-export const serve: Serve = async (file: string, flags: object, restarting: boolean) => {
+export const serve: Serve = async (file: string, flags: Flags, restarting: boolean) => {
   if (restarting) {
     process.emit('SIGUSR2');
   }
 
-  const handler = await getModule(file);
+  const handler: unknown = await getModule(file);
 
   // And then load the files
-  const module = flags.silent ? handler : log(handler, flags.limit);
+  const module: unknown = flags.silent ? handler : log(handler, flags.limit);
   const server = serve(module);
 
   const { isNaN } = Number;
@@ -38,7 +40,7 @@ export const serve: Serve = async (file: string, flags: object, restarting: bool
 
   // Check if the specified port is already in use (if none
   // is specified, the default one will be checked)
-  const open = await getPort(port);
+  const open: number = await getPort(port);
   const old = port;
 
   // Define if the port is already in use
@@ -50,9 +52,9 @@ export const serve: Serve = async (file: string, flags: object, restarting: bool
     inUse = { old, open };
   }
 
-  const sockets = [];
+  const sockets: Socket[] = [];
 
-  server.listen(port, flags.host, (err) => {
+  server.listen(port, flags.host, (err: Error | null) => {
     if (err) {
       console.error('micro:', err.stack);
       process.exit(1);
@@ -66,7 +68,7 @@ export const serve: Serve = async (file: string, flags: object, restarting: bool
     return listening(server, inUse, flags, sockets);
   });
 
-  server.on('connection', (socket) => {
+  server.on('connection', (socket: Socket) => {
     const index = sockets.push(socket);
     socket.once('close', () => sockets.splice(index, 1));
   });
