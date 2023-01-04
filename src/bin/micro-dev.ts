@@ -3,6 +3,7 @@
 /* eslint-disable no-console */
 
 // Native
+import Module from 'module';
 import { existsSync } from 'fs';
 import path from 'path';
 // Packages
@@ -14,7 +15,11 @@ import { serve } from '../lib/serve';
 import { version } from '../../package.json';
 import { logError } from '../lib/error';
 
-const flags = mri(process.argv.slice(2), {
+export interface Flags extends mri.Argv {
+  dotenv?: string;
+}
+
+const flags: Flags = mri(process.argv.slice(2), {
   default: {
     host: '::',
     port: 3000,
@@ -56,9 +61,11 @@ if (flags.version) {
 }
 
 // Load the `.env` file
-dotEnv.config({
-  path: path.resolve(process.cwd(), flags.dotenv),
-});
+if (flags.dotenv) {
+  dotEnv.config({
+    path: path.resolve(process.cwd(), flags.dotenv),
+  });
+}
 
 if (flags.cold && (flags.watch || flags.poll)) {
   logError(
@@ -72,10 +79,17 @@ let file = flags._[0];
 
 if (!file) {
   try {
-    const packageJson = require(path.resolve(process.cwd(), 'package.json'));
-    file = packageJson.main || 'index.js';
-  } catch (err) {
-    if (err.code !== 'MODULE_NOT_FOUND') {
+    const req = Module.createRequire(module.filename);
+    const packageJson: unknown = req(
+      path.resolve(process.cwd(), 'package.json'),
+    );
+    if (hasMain(packageJson)) {
+      file = packageJson.main;
+    } else {
+      file = 'index.js';
+    }
+  } catch (err: unknown) {
+    if (isNodeError(err) && err.code !== 'MODULE_NOT_FOUND') {
       logError(
         `Could not read \`package.json\`: ${err.message}`,
         'invalid-package-json',
@@ -90,7 +104,7 @@ if (!file) {
   process.exit(1);
 }
 
-if (file[0] !== '/') {
+if (file.startsWith('/')) {
   file = path.resolve(process.cwd(), file);
 }
 
@@ -103,3 +117,17 @@ if (!existsSync(file)) {
 }
 
 serve(file, flags);
+
+function hasMain(packageJson: unknown): packageJson is { main: string } {
+  return (
+    typeof packageJson === 'object' &&
+    packageJson !== null &&
+    'main' in packageJson
+  );
+}
+
+function isNodeError(
+  error: unknown,
+): error is { code: string; message: string } {
+  return error instanceof Error && 'code' in error;
+}
